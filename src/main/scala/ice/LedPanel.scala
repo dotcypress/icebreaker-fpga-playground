@@ -23,10 +23,10 @@ case class LedPanel() extends Component {
   }
 
   ledPanel.io.rgb0 := 0
-  ledPanel.io.rgb0(0) := animation.counter.value === ledPanel.io.pixel
-  ledPanel.io.rgb0(1) := (64 - animation.counter.value) === ledPanel.io.pixel
+  ledPanel.io.rgb0(0) := animation.counter.value === ledPanel.io.pixel.payload
+  ledPanel.io.rgb0(1) := (64 - animation.counter.value) === ledPanel.io.pixel.payload
 
   ledPanel.io.rgb1 := 0
-  ledPanel.io.rgb1(0) := (64 - animation.counter.value) === ledPanel.io.pixel
-  ledPanel.io.rgb1(1) := animation.counter.value === ledPanel.io.pixel
+  ledPanel.io.rgb1(0) := (64 - animation.counter.value) === ledPanel.io.pixel.payload
+  ledPanel.io.rgb1(1) := animation.counter.value === ledPanel.io.pixel.payload
 }

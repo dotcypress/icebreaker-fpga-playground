@@ -17,8 +17,9 @@ case class ICN2037Ctrl(width: Int = 64, height: Int = 64) extends Component {
 
     val rgb0 = in(UInt(3 bits))
     val rgb1 = in(UInt(3 bits))
+
     val row = out(UInt(5 bits))
-    val pixel = out(UInt(log2Up(width - 1) bits))
+    val pixel = master(Stream(UInt(log2Up(width - 1) bits)))
   }
 
   val addr = Reg(UInt(5 bits)) init (0)
@@ -55,7 +56,9 @@ case class ICN2037Ctrl(width: Int = 64, height: Int = 64) extends Component {
     val nextRow = new State
 
     val pixelCounter = Counter(width * 2)
-    io.pixel := (pixelCounter.value / 2).resized
+
+    io.pixel.valid := True
+    io.pixel.payload := (pixelCounter.value / 2).resized
 
     shiftData
       .onEntry {

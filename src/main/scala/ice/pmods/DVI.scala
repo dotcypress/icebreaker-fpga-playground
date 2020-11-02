@@ -17,6 +17,7 @@ case class DVICtrl() extends Component {
   val io = new Bundle {
     val pinsA = pmod(DVI())
     val pinsB = pmod(DVI())
+
     val pixels = slave(Stream(Rgb(rgbConfig)))
     val frameStart = out(Bool)
   }
