@@ -19,7 +19,7 @@ case class ICN2037Ctrl(width: Int = 64, height: Int = 64) extends Component {
     val rgb1 = in(UInt(3 bits))
 
     val row = out(UInt(5 bits))
-    val pixel = master(Stream(UInt(log2Up(width - 1) bits)))
+    val pixel = master(Flow(UInt(log2Up(width - 1) bits)))
   }
 
   val addr = Reg(UInt(5 bits)) init (0)
@@ -52,12 +52,12 @@ case class ICN2037Ctrl(width: Int = 64, height: Int = 64) extends Component {
 
   val fsm = new StateMachine {
     val shiftData = new State with EntryPoint
-    val latching = new State
+    val latchData = new State
     val nextRow = new State
 
     val pixelCounter = Counter(width * 2)
 
-    io.pixel.valid := True
+    io.pixel.valid := False
     io.pixel.payload := (pixelCounter.value / 2).resized
 
     shiftData
@@ -65,17 +65,18 @@ case class ICN2037Ctrl(width: Int = 64, height: Int = 64) extends Component {
         pixelCounter.clear()
       }
       .whenIsActive {
+        io.pixel.valid := True
         clock := ~clock
         pixelCounter.increment()
         when(pixelCounter.willOverflowIfInc) {
-          goto(latching)
+          goto(latchData)
         }
       }
       .onExit {
         blank := True
       }
 
-    latching.whenIsActive {
+    latchData.whenIsActive {
       latch := True
       goto(nextRow)
     }

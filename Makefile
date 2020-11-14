@@ -1,4 +1,4 @@
-MODULE = LedPanel
+MODULE = TTA
 BUILD_DIR = target/bitstream
 CONSTRAINTS = ../../src/main/resources/constraints.pcf
 
@@ -15,8 +15,6 @@ bitstream:
 	nextpnr-ice40 --up5k --json $(MODULE).json --pcf $(CONSTRAINTS) --asc $(MODULE).asc && \
 	icetime -d up5k -mtr $(MODULE).rpt $(MODULE).asc && \
 	icepack $(MODULE).asc $(MODULE).bin
-
-# arachne-pnr -d 5k -o $(MODULE).asc -p $(CONSTRAINTS) $(MODULE).blif && \
 
 prog:
 	iceprog -S $(BUILD_DIR)/$(MODULE).bin
