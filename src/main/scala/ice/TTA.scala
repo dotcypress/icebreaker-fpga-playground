@@ -35,20 +35,24 @@ case class TTA() extends Component {
     val core = new SlowArea(4 Hz) {
       val busWidth = (32 bits)
 
+      val pc = CoreFU(busWidth, 256)
+      pc.io.source.valid := False
+      pc.io.source.payload := 0
+
+      val imm = ImmFU(busWidth)
+      imm.io.value := pc.io.imm
+
       val reg = MapFU(busWidth, (input) => input)
       val inc = MapFU(busWidth, _ + 1)
       val dec = MapFU(busWidth, _ - 1)
       val add = StackMapFU(busWidth, 2, (s) => s(0) + s(1))
       val sub = StackMapFU(busWidth, 2, (s) => s(0) - s(1))
 
-      control.snapOff.io.led5 := reg.io.sink.valid
-      control.display.io.value := reg.io.sink.payload.resized
-
-      val imm = ImmFU(busWidth)
-      imm.io.value := CounterFreeRun(256).resized
-
       imm.io.sink >> add.io.source
       add.io.sink >> reg.io.source
+
+      control.snapOff.io.led5 := reg.io.sink.valid
+      control.display.io.value := reg.io.sink.payload.resized
     }
   }
 }
