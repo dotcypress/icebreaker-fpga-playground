@@ -35,7 +35,7 @@ case class TTA() extends Component {
     val core = new SlowArea(4 Hz) {
       val busWidth = (32 bits)
 
-      val pc = CoreFU(busWidth, 256)
+      val pc = CoreFU(busWidth, 4 bits, 256)
       pc.io.source.valid := False
       pc.io.source.payload := 0
 

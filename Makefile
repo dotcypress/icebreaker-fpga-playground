@@ -1,4 +1,4 @@
-MODULE = TTA
+MODULE = LedMatrix8x8
 BUILD_DIR = target/bitstream
 CONSTRAINTS = ../../src/main/resources/constraints.pcf
 
