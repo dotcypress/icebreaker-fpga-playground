@@ -14,8 +14,9 @@ case class WSBlinky() extends Component {
     val pmod1b_pin1 = out(Bool)
   }
 
-  // 45.000 MHz
   val pll = SB_PLL40_PAD(
+    // 45.000 MHz
+    // $ icepll -i 12 -o 45
     PLLConfig(B"4'b0000", B"7'b0111011", B"3'b101", B"3'b100")
   )
 
@@ -30,7 +31,7 @@ case class WSBlinky() extends Component {
     )
   ) {
 
-    val animation = new SlowArea(20 Hz) {
+    val animation = new SlowArea(10 Hz) {
       val offset = CounterFreeRun(100)
     }
 
