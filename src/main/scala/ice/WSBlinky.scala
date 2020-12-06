@@ -30,21 +30,30 @@ case class WSBlinky() extends Component {
       frequency = FixedFrequency(45 MHz)
     )
   ) {
-    val animation = new SlowArea(10 Hz) {
-      val counter = CounterFreeRun(3)
-    }
 
     val display = new SevenSegmentDisplayCtrl
     io.pmod1a <> display.io.pins
     display.io.enable := True
-    display.io.value := animation.counter.resized
+    display.io.value := 0
 
-    val ledStrip = new WS2812bCtrl(24)
-    io.pmod1b_pin1 := !ledStrip.io.ledData
+    val animation = new SlowArea(10 Hz) {
+      val offset = CounterFreeRun(100)
+    }
 
-    ledStrip.io.colors.valid := True
-    ledStrip.io.colors.r := Mux(animation.counter === 0, U"8'd32", U"8'd0")
-    ledStrip.io.colors.g := Mux(animation.counter === 1, U"8'd32", U"8'd0")
-    ledStrip.io.colors.b := Mux(animation.counter === 2, U"8'd32", U"8'd0")
+    new SlowArea(5 MHz) {
+      val ledStrip = new WS2812bCtrl(30)
+      io.pmod1b_pin1 := !ledStrip.io.ledData
+
+      val colorCounter = Counter(3)
+      when(ledStrip.io.colors.ready) {
+        colorCounter.increment()
+      }
+
+      val color = (colorCounter.value + animation.offset.value) % 3
+      ledStrip.io.colors.r := Mux(color === 0, U"8'd32", U"8'd0")
+      ledStrip.io.colors.g := Mux(color === 1, U"8'd32", U"8'd0")
+      ledStrip.io.colors.b := Mux(color === 2, U"8'd32", U"8'd0")
+      ledStrip.io.colors.valid := True
+    }
   }
 }
