@@ -13,52 +13,62 @@ case class WS2812bCtrl(stripSize: Int) extends Component {
     val ledData = out(Bool)
   }
 
+  io.ledData := False
+  io.colors.ready := False
+
   val fsm = new StateMachine {
-    val buffer = Reg(Vec(Bits(rgbConfig.getWidth bits), stripSize))
-    val ledCounter = Counter(stripSize)
-    val bitCounter = Counter(rgbConfig.getWidth)
+    val read = new State with EntryPoint
+    val send = new State
+    val delay = new StateDelay(50 us)
+
     val pulseCounter = Counter(6)
-    val ready = Reg(Bool) init (false)
+    val bitCounter = Counter(rgbConfig.getWidth)
+    val ledCounter = Counter(stripSize)
+    val outbox = Reg(Bits(rgbConfig.getWidth bits))
+    val mem = Mem(Bits(rgbConfig.getWidth bits), wordCount = stripSize)
 
-    io.ledData := False
-    io.colors.ready := ready
+    mem.write(
+      enable = isActive(read) && io.colors.valid,
+      address = ledCounter,
+      data = Cat(
+        Reverse(io.colors.payload.b.asBits),
+        Reverse(io.colors.payload.r.asBits),
+        Reverse(io.colors.payload.g.asBits)
+      )
+    )
 
-    val read: State = new State with EntryPoint {
-      onEntry {
+    outbox := mem
+      .readSync(
+        enable = isActive(send),
+        address = ledCounter
+      )
+
+    read
+      .onEntry {
         ledCounter := 0
-        ready := True
       }
+      .whenIsActive {
+        io.colors.ready := True
 
-      whenIsActive {
         when(io.colors.valid) {
           ledCounter.increment()
-
-          val color = io.colors.payload
-          buffer(ledCounter) := Cat(
-            Reverse(color.b.asBits),
-            Reverse(color.r.asBits),
-            Reverse(color.g.asBits)
-          )
-
           when(ledCounter.willOverflow) {
             goto(send)
           }
         }
       }
-    }
 
-    val send = new State {
-      onEntry {
-        ready := False
+    send
+      .onEntry {
         ledCounter := 0
         bitCounter := 0
         pulseCounter := 0
       }
-
-      whenIsActive {
+      .whenIsActive {
         pulseCounter.increment()
+
         io.ledData := Mux(
-          buffer(ledCounter)(bitCounter),
+          outbox(bitCounter),
           pulseCounter < 3,
           pulseCounter < 5
         )
@@ -75,15 +85,7 @@ case class WS2812bCtrl(stripSize: Int) extends Component {
           goto(delay)
         }
       }
-    }
 
-    val delay = new StateDelay(50 us) {
-      onEntry {
-        ready := True
-        ledCounter := 0
-      }
-
-      whenCompleted(goto(read))
-    }
+    delay.whenCompleted(goto(read))
   }
 }

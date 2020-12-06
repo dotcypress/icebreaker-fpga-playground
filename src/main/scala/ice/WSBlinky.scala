@@ -16,7 +16,6 @@ case class WSBlinky() extends Component {
 
   val pll = SB_PLL40_PAD(
     // 45.000 MHz
-    // $ icepll -i 12 -o 45
     PLLConfig(B"4'b0000", B"7'b0111011", B"3'b101", B"3'b100")
   )
 
@@ -31,12 +30,12 @@ case class WSBlinky() extends Component {
     )
   ) {
 
-    val animation = new SlowArea(10 Hz) {
+    val animation = new SlowArea(15 Hz) {
       val offset = CounterFreeRun(100)
     }
 
     new SlowArea(5 MHz) {
-      val ledStrip = new WS2812bCtrl(30)
+      val ledStrip = new WS2812bCtrl(300)
       ledStrip.io.colors.valid := True
       io.pmod1b_pin1 := !ledStrip.io.ledData
 
