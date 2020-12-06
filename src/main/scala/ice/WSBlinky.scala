@@ -13,7 +13,6 @@ case class WSBlinky() extends Component {
   val io = new Bundle {
     val pmod1a = pmod(SevenSegmentDisplay())
     val pmod1b_pin1 = out(Bool)
-    val pmod2 = pmod(SnapOff())
   }
 
   // 45.000 MHz
@@ -31,15 +30,6 @@ case class WSBlinky() extends Component {
       frequency = FixedFrequency(45 MHz)
     )
   ) {
-    val snapOff = new SnapOffCtrl
-    io.pmod2 <> snapOff.io.pins
-
-    snapOff.io.led1 := snapOff.io.button1
-    snapOff.io.led2 := snapOff.io.button2
-    snapOff.io.led3 := snapOff.io.button3
-    snapOff.io.led4 := snapOff.io.button1 & snapOff.io.button2
-    snapOff.io.led5 := snapOff.io.button2 & snapOff.io.button3
-
     val animation = new SlowArea(10 Hz) {
       val counter = CounterFreeRun(3)
     }
@@ -51,7 +41,7 @@ case class WSBlinky() extends Component {
 
     val ledStrip = new WS2812bCtrl(24)
     io.pmod1b_pin1 := !ledStrip.io.ledData
-    
+
     ledStrip.io.colors.valid := True
     ledStrip.io.colors.r := Mux(animation.counter === 0, U"8'd32", U"8'd0")
     ledStrip.io.colors.g := Mux(animation.counter === 1, U"8'd32", U"8'd0")
