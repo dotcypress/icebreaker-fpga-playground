@@ -11,7 +11,6 @@ object WSBlinky {
 
 case class WSBlinky() extends Component {
   val io = new Bundle {
-    val pmod1a = pmod(SevenSegmentDisplay())
     val pmod1b_pin1 = out(Bool)
   }
 
@@ -31,17 +30,13 @@ case class WSBlinky() extends Component {
     )
   ) {
 
-    val display = new SevenSegmentDisplayCtrl
-    io.pmod1a <> display.io.pins
-    display.io.enable := True
-    display.io.value := 0
-
-    val animation = new SlowArea(10 Hz) {
+    val animation = new SlowArea(20 Hz) {
       val offset = CounterFreeRun(100)
     }
 
     new SlowArea(5 MHz) {
       val ledStrip = new WS2812bCtrl(30)
+      ledStrip.io.colors.valid := True
       io.pmod1b_pin1 := !ledStrip.io.ledData
 
       val colorCounter = Counter(3)
@@ -53,7 +48,6 @@ case class WSBlinky() extends Component {
       ledStrip.io.colors.r := Mux(color === 0, U"8'd32", U"8'd0")
       ledStrip.io.colors.g := Mux(color === 1, U"8'd32", U"8'd0")
       ledStrip.io.colors.b := Mux(color === 2, U"8'd32", U"8'd0")
-      ledStrip.io.colors.valid := True
     }
   }
 }
