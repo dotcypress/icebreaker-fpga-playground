@@ -5,7 +5,7 @@ import spinal.lib._
 import pmods._
 
 object LedPanel {
-  def main(args: Array[String]) = IceBreaker.generate(new LedPanel)
+  def main(args: Array[String]) = boards.IceBreaker.generate(new LedPanel)
 }
 
 case class LedPanel() extends Component {

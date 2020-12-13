@@ -6,7 +6,7 @@ import spinal.lib.com.uart._
 import pmods._
 
 object Echo {
-  def main(args: Array[String]) = IceBreaker.generate(new Echo)
+  def main(args: Array[String]) = boards.IceBreaker.generate(new Echo)
 }
 
 case class Echo() extends Component {

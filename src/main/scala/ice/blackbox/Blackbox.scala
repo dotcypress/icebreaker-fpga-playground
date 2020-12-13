@@ -1,4 +1,4 @@
-package ice
+package ice.blackbox
 
 import spinal.core._
 import spinal.lib._

@@ -1,4 +1,4 @@
-package ice
+package ice.boards
 
 import java.nio.file._
 import spinal.core._

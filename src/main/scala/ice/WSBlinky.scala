@@ -1,12 +1,14 @@
 package ice
 
 import spinal.core._
+import spinal.core.ClockDomain.ClockFrequency
 import spinal.lib._
 import pmods._
-import spinal.core.ClockDomain.ClockFrequency
+import blackbox._
+import comps._
 
 object WSBlinky {
-  def main(args: Array[String]) = IceBreaker.generate(new WSBlinky)
+  def main(args: Array[String]) = boards.IceBreaker.generate(new WSBlinky)
 }
 
 case class WSBlinky() extends Component {

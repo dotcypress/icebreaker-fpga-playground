@@ -5,7 +5,7 @@ import spinal.lib._
 import pmods._
 
 object HexCounter {
-  def main(args: Array[String]) = IceBreaker.generate(new HexCounter)
+  def main(args: Array[String]) = boards.IceBreaker.generate(new HexCounter)
 }
 
 case class HexCounter() extends Component {

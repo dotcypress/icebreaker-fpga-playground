@@ -2,10 +2,11 @@ package ice
 
 import spinal.core._
 import spinal.lib._
+import blackbox._
 import pmods._
 
 object HDMI {
-  def main(args: Array[String]) = IceBreaker.generate(new HDMI)
+  def main(args: Array[String]) = boards.IceBreaker.generate(new HDMI)
 }
 
 case class HDMI() extends Component {

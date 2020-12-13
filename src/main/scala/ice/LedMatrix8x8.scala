@@ -5,7 +5,7 @@ import spinal.lib._
 import pmods._
 
 object LedMatrix8x8 {
-  def main(args: Array[String]) = IceBreaker.generate(new LedMatrix8x8)
+  def main(args: Array[String]) = boards.IceBreaker.generate(new LedMatrix8x8)
 }
 
 case class LedMatrix8x8() extends Component {
