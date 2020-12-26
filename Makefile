@@ -2,19 +2,22 @@ MODULE = MuraxSoC
 BUILD_DIR = target/bitstream
 CONSTRAINTS = src/main/resources/constraints.pcf
 
-all: build
+all: bitstream
 
-build: elaborate bitstream
-
-elaborate:
+elaborate: 
 	sbt --supershell=never "runMain ice.$(MODULE)"
 
-bitstream:
+bitstream: elaborate
 	cd $(BUILD_DIR) && \
 	yosys -q -p 'synth_ice40 -top $(MODULE) -json $(MODULE).json' $(MODULE).v && \
 	nextpnr-ice40 --up5k --json $(MODULE).json --pcf ../../$(CONSTRAINTS) --asc $(MODULE).asc && \
 	icetime -d up5k -mtr $(MODULE).rpt $(MODULE).asc && \
 	icepack $(MODULE).asc $(MODULE).bin
+
+firmware:
+	cd soft-core-firmware && \
+	cargo build --release && \
+	riscv32-unknown-elf-objcopy -O ihex -S target/riscv32i-unknown-none-elf/release/soft-core-firmware ../src/main/resources/soft-core-firmware.hex
 
 prog:
 	iceprog -S $(BUILD_DIR)/$(MODULE).bin
@@ -27,4 +30,4 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 .SECONDARY:
-.PHONY: all bitstream build clean elaborate flash prog
+.PHONY: all bitstream build clean elaborate flash prog firmware

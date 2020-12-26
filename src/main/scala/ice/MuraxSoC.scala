@@ -13,6 +13,7 @@ object MuraxSoC {
 case class MuraxSoC() extends Component {
   val io = new Bundle {
     val uart = master(Uart())
+    val pmod1a = pmod(SevenSegmentDisplay())
     val pmod2 = pmod(SnapOff())
   }
 
@@ -21,8 +22,7 @@ case class MuraxSoC() extends Component {
 
   val murax = Murax(
     MuraxConfig.default.copy(
-      gpioWidth = 8,
-      onChipRamHexFile = "src/main/resources/soft-core-ram.hex"
+      onChipRamHexFile = "src/main/resources/soft-core-firmware.hex"
     )
   )
 
@@ -35,11 +35,18 @@ case class MuraxSoC() extends Component {
   murax.io.asyncReset := ~snapOff.io.button3
 
   murax.io.gpioA.read := 0
-  val gpio = murax.io.gpioA.write
+  val gpio = murax.io.gpioA.write.addTag(crossClockDomain)
 
-  snapOff.io.led1 := gpio(0)
-  snapOff.io.led2 := gpio(1)
-  snapOff.io.led3 := gpio(2)
-  snapOff.io.led4 := gpio(3)
-  snapOff.io.led5 := gpio(4)
+  new SlowArea(400 Hz) {
+    snapOff.io.led1 := gpio(0)
+    snapOff.io.led2 := gpio(1)
+    snapOff.io.led3 := gpio(2)
+    snapOff.io.led4 := gpio(3)
+    snapOff.io.led5 := gpio(4)
+
+    val display = new SevenSegmentDisplayCtrl
+    display.io.pins <> io.pmod1a
+    display.io.value := gpio(10 downto 3).asUInt
+    display.io.enable := True
+  }
 }
