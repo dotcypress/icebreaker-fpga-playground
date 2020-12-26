@@ -16,7 +16,7 @@ case class WSBlinky() extends Component {
     val pmod1b_pin1 = out(Bool)
   }
 
-  val pll = SB_PLL40_PAD(
+  val pll = PLLPad(
     // 45.000 MHz
     PLLConfig(B"4'b0000", B"7'b0111011", B"3'b101", B"3'b100")
   )

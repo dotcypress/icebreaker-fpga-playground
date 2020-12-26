@@ -17,10 +17,16 @@ case class PLLConfig(
   }
 }
 
-case class SB_PLL40_PAD(p: PLLConfig) extends BlackBox {
+case class PLLPad(p: PLLConfig) extends BlackBox {
   val clockPin = in(Bool).setName("PACKAGEPIN")
   val coreClockOut = out(Bool).setName("PLLOUTCORE")
   val reset = in(Bool).setName("RESETB")
-
   p.applyTo(this)
+  setDefinitionName("SB_PLL40_PAD")
+}
+
+case class GlobalBuffer() extends BlackBox {
+  val input = in(Bool).setName("USER_SIGNAL_TO_GLOBAL_BUFFER")
+  val output = out(Bool).setName("GLOBAL_BUFFER_OUTPUT")
+  setDefinitionName("SB_GB")
 }

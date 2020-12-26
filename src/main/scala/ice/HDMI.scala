@@ -17,7 +17,7 @@ case class HDMI() extends Component {
 
   // 25.125 MHz
   val config = PLLConfig(B"4'b0000", B"7'b1000010", B"3'b101", B"3'b001")
-  val pll = SB_PLL40_PAD(config)
+  val pll = PLLPad(config)
 
   pll.clockPin := ClockDomain.current.readClockWire
   pll.reset := ClockDomain.current.readResetWire
