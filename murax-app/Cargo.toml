@@ -9,6 +9,7 @@ license = "MIT/APACHE"
 panic-halt = "0.2.0"
 riscv = "0.6.0"
 riscv-rt = "0.8.0"
+murax-pac = { path = "../murax-pac/", features = ["rt"]}
 
 [[bin]]
 name = "murax-app"
