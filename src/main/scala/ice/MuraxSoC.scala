@@ -22,7 +22,7 @@ case class MuraxSoC() extends Component {
 
   val murax = Murax(
     MuraxConfig.default.copy(
-      onChipRamHexFile = "src/main/resources/soft-core-firmware.hex"
+      onChipRamHexFile = "src/main/resources/murax-app.hex"
     )
   )
 

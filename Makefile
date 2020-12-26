@@ -14,10 +14,10 @@ bitstream: elaborate
 	icetime -d up5k -mtr $(MODULE).rpt $(MODULE).asc && \
 	icepack $(MODULE).asc $(MODULE).bin
 
-firmware:
-	cd soft-core-firmware && \
+murax-app:
+	cd murax-app && \
 	cargo build --release && \
-	riscv32-unknown-elf-objcopy -O ihex -S target/riscv32i-unknown-none-elf/release/soft-core-firmware ../src/main/resources/soft-core-firmware.hex
+	riscv32-unknown-elf-objcopy -O ihex -S target/riscv32i-unknown-none-elf/release/murax-app ../src/main/resources/murax-app.hex
 
 prog:
 	iceprog -S $(BUILD_DIR)/$(MODULE).bin
@@ -30,4 +30,4 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 .SECONDARY:
-.PHONY: all bitstream build clean elaborate flash prog firmware
+.PHONY: all bitstream build clean elaborate flash prog murax-app

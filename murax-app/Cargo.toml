@@ -1,5 +1,5 @@
 [package]
-name = "soft-core-firmware"
+name = "murax-app"
 version = "0.0.0"
 authors = ["Vitaly Domnikov <oss@vitaly.codes>"]
 edition = "2018"
@@ -11,7 +11,7 @@ riscv = "0.6.0"
 riscv-rt = "0.8.0"
 
 [[bin]]
-name = "soft-core-firmware"
+name = "murax-app"
 test = false
 bench = false
 
