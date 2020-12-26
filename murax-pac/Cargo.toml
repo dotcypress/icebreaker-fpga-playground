@@ -11,5 +11,8 @@ riscv = "0.6.0"
 riscv-rt = { version = "0.8", optional = true }
 vcell = "0.1.2"
 
+[build-dependencies]
+svd2ral = { git = "https://github.com/Disasm/svd2ral" }
+
 [features]
 rt = ["riscv-rt"]

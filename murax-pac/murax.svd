@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd">
-  <name>Murax SoC</name>
-  <vendor>VexRisc</vendor>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance">
+  <name>Murax</name>
   <cpu>
-    <name>CM3</name>
-    <revision>r2p1</revision>
+    <name>VexRisc</name>
+    <revision>2.0.0</revision>
     <endian>little</endian>
     <mpuPresent>0</mpuPresent>
     <fpuPresent>0</fpuPresent>
-    <nvicPrioBits>4</nvicPrioBits>
+    <nvicPrioBits>0</nvicPrioBits>
     <vendorSystickConfig>0</vendorSystickConfig>
   </cpu>
   <addressUnitBits>8</addressUnitBits>
@@ -19,15 +18,19 @@
   <resetMask>0xFFFFFFFF</resetMask>
   <peripherals>
     <peripheral>
-      <name>GPIO</name>
-      <baseAddress>0xF0000000</baseAddress>
+      <name>GPIOA</name>
       <groupName>GPIO</groupName>
+      <description>General Purpose I/O</description>
+      <baseAddress>0xF0000000</baseAddress>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0xC</size>
+        <usage>registers</usage>
+      </addressBlock>
       <registers>
         <register>
           <name>INPUT</name>
-          <description>
-            <![CDATA[GPIO]]>
-          </description>
+          <description>Digital input</description>
           <addressOffset>0x0000</addressOffset>
           <resetValue>0x00</resetValue>
           <size>32</size>
@@ -42,44 +45,21 @@
         </register>
         <register>
           <name>OUTPUT</name>
-          <description>
-            <![CDATA[GPIO]]>
-          </description>
+          <description>Digital output</description>
           <addressOffset>0x0004</addressOffset>
           <resetValue>0x00</resetValue>
           <size>32</size>
-          <fields>
-            <field>
-              <name>output</name>
-              <msb>31</msb>
-              <bitRange>[31:0]</bitRange>
-              <lsb>0</lsb>
-            </field>
-          </fields>
+          <fields></fields>
         </register>
         <register>
-          <name>OUTPUT_ENABLE</name>
-          <description>
-            <![CDATA[GPIO]]>
-          </description>
+          <name>DIRECTION</name>
+          <description>I/O direction</description>
           <addressOffset>0x0008</addressOffset>
           <resetValue>0x00</resetValue>
           <size>32</size>
-          <fields>
-            <field>
-              <name>output_enable</name>
-              <msb>31</msb>
-              <bitRange>[31:0]</bitRange>
-              <lsb>0</lsb>
-            </field>
-          </fields>
+          <fields></fields>
         </register>
       </registers>
-      <addressBlock>
-        <offset>0</offset>
-        <size>0xC</size>
-        <usage>registers</usage>
-      </addressBlock>
     </peripheral>
   </peripherals>
 </device>
