@@ -15,9 +15,9 @@ bitstream: elaborate
 	icepack $(MODULE).asc $(MODULE).bin
 
 murax-app:
-	cd murax-app && \
+	cd src/main/rust/murax-app && \
 	cargo build --release && \
-	riscv32-unknown-elf-objcopy -O ihex -S target/riscv32i-unknown-none-elf/release/murax-app ../src/main/resources/murax-app.hex
+	riscv32-unknown-elf-objcopy -O ihex -S target/riscv32i-unknown-none-elf/release/murax-app ../../resources/murax-app.hex
 
 prog:
 	iceprog -S $(BUILD_DIR)/$(MODULE).bin
@@ -28,6 +28,8 @@ flash:
 clean:
 	sbt clean --supershell=never
 	rm -rf $(BUILD_DIR)
+	cd src/main/rust/murax-app && cargo clean
+	cd src/main/rust/murax-pac && cargo clean
 
 .SECONDARY:
 .PHONY: all bitstream build clean elaborate flash prog murax-app
