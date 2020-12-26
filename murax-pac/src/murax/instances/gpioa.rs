@@ -75,6 +75,7 @@ pub mod GPIOA {
     /// This function is similar to take() but forcibly takes the
     /// Instance, marking it as taken irregardless of its previous
     /// state.
+    #[allow(clippy::missing_safety_doc)]
     #[inline]
     pub unsafe fn steal() -> Instance {
         GPIOA_TAKEN = true;
@@ -86,6 +87,7 @@ pub mod GPIOA {
     /// This will not check if `take()` or `steal()` have already been called
     /// before. It is the caller's responsibility to use the returned instance
     /// in a safe way that does not conflict with other instances.
+    #[allow(clippy::missing_safety_doc)]
     #[inline]
     pub unsafe fn conjure() -> Instance {
         INSTANCE

@@ -233,7 +233,7 @@ dependencies = [
 [[package]]
 name = "svd2ral"
 version = "0.0.1"
-source = "git+https://github.com/Disasm/svd2ral#1a78f786594f8d306879d1d4a04589ff86bdd1c0"
+source = "git+https://github.com/Disasm/svd2ral#ad78dd4c3b157b1f0fa6ac1ecb59f7c3ab98ad0a"
 dependencies = [
  "anyhow",
  "svd-parser",
