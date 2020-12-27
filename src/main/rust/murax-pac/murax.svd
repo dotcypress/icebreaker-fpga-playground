@@ -2,7 +2,7 @@
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance">
   <name>Murax</name>
   <cpu>
-    <name>VexRisc</name>
+    <name>VexRiscV</name>
     <revision>2.0.0</revision>
     <endian>little</endian>
     <mpuPresent>0</mpuPresent>

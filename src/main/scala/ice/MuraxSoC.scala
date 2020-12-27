@@ -31,11 +31,14 @@ case class MuraxSoC() extends Component {
   murax.io.jtag.tdi := False
 
   murax.io.mainClk := ClockDomain.current.readClockWire
+  murax.systemClockDomain.setSyncWith(ClockDomain.current)
+
   murax.io.uart <> io.uart
   murax.io.asyncReset := ~snapOff.io.button3
 
   murax.io.gpioA.read := 0
-  val gpio = murax.io.gpioA.write.addTag(crossClockDomain)
+
+  val gpio = murax.io.gpioA.write
 
   new SlowArea(400 Hz) {
     snapOff.io.led1 := gpio(0)
