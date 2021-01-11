@@ -1,4 +1,4 @@
-MODULE = MuraxSoC
+MODULE = SharpMemoryLCD
 BUILD_DIR = target/bitstream
 CONSTRAINTS = src/main/resources/constraints.pcf
 
