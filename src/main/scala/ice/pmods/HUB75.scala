@@ -5,9 +5,7 @@ import spinal.lib._
 import spinal.lib.fsm._
 
 case class HUB75() extends PMODBundle {
-  override def build() = {
-    out(pin1, pin2, pin3, pin4, pin7, pin8, pin9, pin10)
-  }
+  override def build() = this.asOutput()
 }
 
 case class ICN2037Ctrl(width: Int = 64, height: Int = 64) extends Component {

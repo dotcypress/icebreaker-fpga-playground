@@ -7,9 +7,7 @@ import spinal.lib.graphic._
 import spinal.lib.graphic.vga._
 
 case class DVI() extends PMODBundle {
-  override def build() = {
-    out(pin1, pin2, pin3, pin4, pin7, pin8, pin9, pin10)
-  }
+  override def build() = this.asOutput()
 }
 
 case class DVICtrl() extends Component {

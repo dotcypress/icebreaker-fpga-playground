@@ -5,9 +5,7 @@ import spinal.lib._
 import spinal.lib.fsm._
 
 case class SevenSegmentDisplay() extends PMODBundle {
-  override def build() = {
-    out(pin1, pin2, pin3, pin4, pin7, pin8, pin9, pin10)
-  }
+  override def build() = this.asOutput()
 }
 
 case class SevenSegmentDisplayCtrl() extends Component {

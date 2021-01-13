@@ -4,9 +4,7 @@ import spinal.core._
 import spinal.lib._
 
 case class DIPSwitch() extends PMODBundle {
-  override def build() = {
-    in(pin1, pin2, pin3, pin4, pin7, pin8, pin9, pin10)
-  }
+  override def build() = this.asInput()
 }
 
 case class DIPSwitchCtrl(msbFirst: Boolean = true) extends Component {
