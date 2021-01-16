@@ -26,9 +26,9 @@ case class LedMatrixCtrl(width: Int, height: Int) extends Component {
   val clock = Reg(Bool)
   val latch = Reg(Bool)
 
-  io.pins.pin10 := active
-  io.pins.pin9 := clock
-  io.pins.pin8 := latch
+  io.pins.pin10 := active.asBits
+  io.pins.pin9 := clock.asBits
+  io.pins.pin8 := latch.asBits
 
   val fsm = new StateMachine {
     val shiftData = new State with EntryPoint

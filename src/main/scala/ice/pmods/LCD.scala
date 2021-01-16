@@ -18,17 +18,24 @@ case class MemoryLCDCtrl(width: Int = 400, height: Int = 240)
     val pixels = master(Flow(Pixel(width, height)))
   }
 
-  val powerOn = io.pins.pin1
-  val vcomIntMode = io.pins.pin2
-  val vcom = io.pins.pin3
-  val buzzer = io.pins.pin4
-  val displayClock = io.pins.pin10
-  val data = io.pins.pin9
-  val chipSelect = io.pins.pin8
-  val displayOn = io.pins.pin7
+  val powerOn = False
+  val vcomIntMode = False
+  val vcom = False
+  val buzzer = False
+  val displayClock = False
+  val data = False
+  val chipSelect = False
+  val displayOn = False
 
-  vcomIntMode := False
   buzzer := io.buzzer
+  io.pins.pin1 := powerOn.asBits
+  io.pins.pin2 := vcomIntMode.asBits
+  io.pins.pin3 := vcom.asBits
+  io.pins.pin4 := buzzer.asBits
+  io.pins.pin10 := displayClock.asBits
+  io.pins.pin9 := data.asBits
+  io.pins.pin8 := chipSelect.asBits
+  io.pins.pin7 := displayOn.asBits
 
   new SlowArea(10 Hz) {
     vcom := CounterFreeRun(2).willOverflow

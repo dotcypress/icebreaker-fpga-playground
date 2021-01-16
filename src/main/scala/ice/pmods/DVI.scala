@@ -28,23 +28,23 @@ case class DVICtrl() extends Component {
 
   io.frameStart := ctrl.io.frameStart
 
-  io.pinsB.pin2 := ClockDomain.current.readClockWire
-  io.pinsB.pin9 := ctrl.io.vga.colorEn
-  io.pinsB.pin4 := ctrl.io.vga.hSync
-  io.pinsB.pin10 := ctrl.io.vga.vSync
+  io.pinsB.pin2 := ClockDomain.current.readClockWire.asBits
+  io.pinsB.pin9 := ctrl.io.vga.colorEn.asBits
+  io.pinsB.pin4 := ctrl.io.vga.hSync.asBits
+  io.pinsB.pin10 := ctrl.io.vga.vSync.asBits
 
-  io.pinsA.pin8 := ctrl.io.vga.color.r(0)
-  io.pinsA.pin2 := ctrl.io.vga.color.r(1)
-  io.pinsA.pin7 := ctrl.io.vga.color.r(2)
-  io.pinsA.pin1 := ctrl.io.vga.color.r(3)
+  io.pinsA.pin8 := ctrl.io.vga.color.r(0).asBits
+  io.pinsA.pin2 := ctrl.io.vga.color.r(1).asBits
+  io.pinsA.pin7 := ctrl.io.vga.color.r(2).asBits
+  io.pinsA.pin1 := ctrl.io.vga.color.r(3).asBits
 
-  io.pinsA.pin10 := ctrl.io.vga.color.g(0)
-  io.pinsA.pin4 := ctrl.io.vga.color.g(1)
-  io.pinsA.pin9 := ctrl.io.vga.color.g(2)
-  io.pinsA.pin3 := ctrl.io.vga.color.g(3)
+  io.pinsA.pin10 := ctrl.io.vga.color.g(0).asBits
+  io.pinsA.pin4 := ctrl.io.vga.color.g(1).asBits
+  io.pinsA.pin9 := ctrl.io.vga.color.g(2).asBits
+  io.pinsA.pin3 := ctrl.io.vga.color.g(3).asBits
 
-  io.pinsB.pin3 := ctrl.io.vga.color.b(0)
-  io.pinsB.pin8 := ctrl.io.vga.color.b(1)
-  io.pinsB.pin7 := ctrl.io.vga.color.b(2)
-  io.pinsB.pin1 := ctrl.io.vga.color.b(3)
+  io.pinsB.pin3 := ctrl.io.vga.color.b(0).asBits
+  io.pinsB.pin8 := ctrl.io.vga.color.b(1).asBits
+  io.pinsB.pin7 := ctrl.io.vga.color.b(2).asBits
+  io.pinsB.pin1 := ctrl.io.vga.color.b(3).asBits
 }

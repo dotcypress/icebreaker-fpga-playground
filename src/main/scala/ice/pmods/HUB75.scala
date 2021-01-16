@@ -27,26 +27,26 @@ case class ICN2037Ctrl(width: Int = 64, height: Int = 64) extends Component {
   val blank = Reg(Bool)
   val latch = Reg(Bool)
 
-  io.pinsB.pin7 := blank
-  io.pinsB.pin8 := latch
-  io.pinsB.pin9 := clock
+  io.pinsB.pin7 := blank.asBits
+  io.pinsB.pin8 := latch.asBits
+  io.pinsB.pin9 := clock.asBits
 
-  io.pinsA.pin4 := False
-  io.pinsA.pin10 := False
+  io.pinsA.pin4 := B(0)
+  io.pinsA.pin10 := B(0)
 
-  io.pinsA.pin1 := io.rgb0(0)
-  io.pinsA.pin2 := io.rgb0(1)
-  io.pinsA.pin3 := io.rgb0(2)
+  io.pinsA.pin1 := io.rgb0(0).asBits
+  io.pinsA.pin2 := io.rgb0(1).asBits
+  io.pinsA.pin3 := io.rgb0(2).asBits
 
-  io.pinsA.pin7 := io.rgb1(0)
-  io.pinsA.pin8 := io.rgb1(1)
-  io.pinsA.pin9 := io.rgb1(2)
+  io.pinsA.pin7 := io.rgb1(0).asBits
+  io.pinsA.pin8 := io.rgb1(1).asBits
+  io.pinsA.pin9 := io.rgb1(2).asBits
 
-  io.pinsB.pin1 := addr(0)
-  io.pinsB.pin2 := addr(1)
-  io.pinsB.pin3 := addr(2)
-  io.pinsB.pin4 := addr(3)
-  io.pinsB.pin10 := addr(4)
+  io.pinsB.pin1 := addr(0).asBits
+  io.pinsB.pin2 := addr(1).asBits
+  io.pinsB.pin3 := addr(2).asBits
+  io.pinsB.pin4 := addr(3).asBits
+  io.pinsB.pin10 := addr(4).asBits
 
   val fsm = new StateMachine {
     val shiftData = new State with EntryPoint
