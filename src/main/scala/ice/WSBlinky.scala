@@ -5,7 +5,7 @@ import spinal.core.ClockDomain.ClockFrequency
 import spinal.lib._
 import pmods._
 import blackbox._
-import comps._
+import lib._
 
 object WSBlinky {
   def main(args: Array[String]) = boards.IceBreaker.generate(new WSBlinky)

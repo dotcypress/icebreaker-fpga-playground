@@ -1,4 +1,4 @@
-package ice.comps
+package ice.lib
 
 import spinal.core._
 import spinal.lib._
