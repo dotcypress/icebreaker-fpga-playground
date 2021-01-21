@@ -11,9 +11,9 @@ object ColorSensor {
 
 case class ColorSensor() extends Component {
   val io = new Bundle {
-    val pmod1a = pmod(SevenSegmentDisplay())
-    val pmod1b = pmod(SnapOff())
-    val pmod2 = pmod(TCS3200())
+    val pmod1a = master(SevenSegmentDisplay())
+    val pmod1b = master(SnapOff())
+    val pmod2 = master(TCS3200())
   }
 
   val colorSensor = new TCS3200Ctrl

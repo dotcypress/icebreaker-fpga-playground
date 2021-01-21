@@ -5,7 +5,7 @@ import spinal.lib._
 import spinal.lib.fsm._
 
 case class MemoryLCD() extends PMODBundle {
-  override def build() = this.asOutput()
+  override def asMaster() = this.asOutput()
 }
 
 case class MemoryLCDCtrl(width: Int = 400, height: Int = 240)
@@ -14,7 +14,7 @@ case class MemoryLCDCtrl(width: Int = 400, height: Int = 240)
     val displayOn = in(Bool)
     val buzzer = in(Bool)
     val hit = in(Bool)
-    val pins = pmod(MemoryLCD())
+    val pins = master(MemoryLCD())
     val pixels = master(Flow(Pixel(width, height)))
   }
 

@@ -5,7 +5,7 @@ import spinal.lib._
 import spinal.lib.fsm._
 
 case class TCS3200() extends PMODBundle {
-  override def build() = {
+  override def asMaster() = {
     in(pin2, pin3, pin4)
     out(pin1, pin7, pin8, pin9, pin10)
   }
@@ -24,7 +24,7 @@ case class TCS3200Ctrl(
     measurePeriod: TimeNumber = 2 ms
 ) extends Component {
   val io = new Bundle {
-    val pins = pmod(TCS3200())
+    val pins = master(TCS3200())
     val color = master(Flow(Color(width)))
   }
 

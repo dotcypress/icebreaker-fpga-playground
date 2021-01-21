@@ -10,8 +10,8 @@ object SharpMemoryLCD {
 
 case class SharpMemoryLCD() extends Component {
   val io = new Bundle {
-    val pmod1a = pmod(MemoryLCD())
-    val pmod2 = pmod(SnapOff())
+    val pmod1a = master(MemoryLCD())
+    val pmod2 = master(SnapOff())
   }
 
   val display = new MemoryLCDCtrl

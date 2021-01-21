@@ -11,8 +11,8 @@ object HDMI {
 
 case class HDMI() extends Component {
   val io = new Bundle {
-    val pmod1a = pmod(DVI())
-    val pmod1b = pmod(DVI())
+    val pmod1a = master(DVI())
+    val pmod1b = master(DVI())
   }
 
   // 25.125 MHz

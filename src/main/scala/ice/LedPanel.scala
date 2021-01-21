@@ -10,8 +10,8 @@ object LedPanel {
 
 case class LedPanel() extends Component {
   val io = new Bundle {
-    val pmod1a = pmod(HUB75())
-    val pmod1b = pmod(HUB75())
+    val pmod1a = master(HUB75())
+    val pmod1b = master(HUB75())
   }
 
   val ledPanel = new ICN2037Ctrl

@@ -10,7 +10,7 @@ object LedMatrix8x8 {
 
 case class LedMatrix8x8() extends Component {
   val io = new Bundle {
-    val pmod2 = pmod(LedMatrix())
+    val pmod2 = master(LedMatrix())
   }
 
   val animation = new SlowArea(1000 Hz) {

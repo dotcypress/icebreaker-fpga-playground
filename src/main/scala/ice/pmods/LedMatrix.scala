@@ -10,7 +10,7 @@ case class Pixel(maxWidth: Int, maxHeight: Int) extends Bundle {
 }
 
 case class LedMatrix() extends PMODBundle {
-  override def build() = {
+  override def asMaster() = {
     out(pin8, pin9, pin10)
     in(pin1, pin2, pin3, pin4, pin7)
   }
@@ -18,7 +18,7 @@ case class LedMatrix() extends PMODBundle {
 
 case class LedMatrixCtrl(width: Int, height: Int) extends Component {
   val io = new Bundle {
-    val pins = pmod(LedMatrix())
+    val pins = master(LedMatrix())
     val pixel = master(Flow(Pixel(width, height)))
   }
 

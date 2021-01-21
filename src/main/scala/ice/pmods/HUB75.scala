@@ -5,13 +5,13 @@ import spinal.lib._
 import spinal.lib.fsm._
 
 case class HUB75() extends PMODBundle {
-  override def build() = this.asOutput()
+  override def asMaster() = this.asOutput()
 }
 
 case class ICN2037Ctrl(width: Int = 64, height: Int = 64) extends Component {
   val io = new Bundle {
-    val pinsA = pmod(HUB75())
-    val pinsB = pmod(HUB75())
+    val pinsA = master(HUB75())
+    val pinsB = master(HUB75())
 
     val rgb0 = in(UInt(3 bits))
     val rgb1 = in(UInt(3 bits))

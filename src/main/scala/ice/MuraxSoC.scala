@@ -13,8 +13,8 @@ object MuraxSoC {
 case class MuraxSoC() extends Component {
   val io = new Bundle {
     val uart = master(Uart())
-    val pmod1a = pmod(SevenSegmentDisplay())
-    val pmod2 = pmod(SnapOff())
+    val pmod1a = master(SevenSegmentDisplay())
+    val pmod2 = master(SnapOff())
   }
 
   val snapOff = new SnapOffCtrl

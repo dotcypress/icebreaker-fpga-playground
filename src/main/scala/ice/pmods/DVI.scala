@@ -7,14 +7,14 @@ import spinal.lib.graphic._
 import spinal.lib.graphic.vga._
 
 case class DVI() extends PMODBundle {
-  override def build() = this.asOutput()
+  override def asMaster() = this.asOutput()
 }
 
 case class DVICtrl() extends Component {
   val rgbConfig = RgbConfig(4, 4, 4)
   val io = new Bundle {
-    val pinsA = pmod(DVI())
-    val pinsB = pmod(DVI())
+    val pinsA = master(DVI())
+    val pinsB = master(DVI())
 
     val pixels = slave(Stream(Rgb(rgbConfig)))
     val frameStart = out(Bool)

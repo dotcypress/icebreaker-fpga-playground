@@ -10,9 +10,9 @@ object HexCounter {
 
 case class HexCounter() extends Component {
   val io = new Bundle {
-    val pmod1a = pmod(SevenSegmentDisplay())
-    val pmod1b = pmod(DIPSwitch())
-    val pmod2 = pmod(SnapOff())
+    val pmod1a = master(SevenSegmentDisplay())
+    val pmod1b = master(DIPSwitch())
+    val pmod2 = master(SnapOff())
   }
 
   val coreArea = new SlowArea(400 Hz) {
