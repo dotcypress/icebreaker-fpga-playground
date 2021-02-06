@@ -1,4 +1,4 @@
-MODULE = ColorSensor
+MODULE = LedPanel
 BUILD_DIR = target/bitstream
 CONSTRAINTS = src/main/resources/constraints.pcf
 

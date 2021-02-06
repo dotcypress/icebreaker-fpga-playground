@@ -18,14 +18,14 @@ case class MemoryLCDCtrl(width: Int = 400, height: Int = 240)
     val pixels = master(Flow(Pixel(width, height)))
   }
 
-  val powerOn = False
+  val buzzer = Bool
+  val chipSelect = Bool
+  val data = Bool
+  val displayClock = Bool
+  val displayOn = Bool
+  val powerOn = Bool
+  val vcom = Bool
   val vcomIntMode = False
-  val vcom = False
-  val buzzer = False
-  val displayClock = False
-  val data = False
-  val chipSelect = False
-  val displayOn = False
 
   buzzer := io.buzzer
   io.pins.pin1 := powerOn.asBits
