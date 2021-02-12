@@ -1,10 +1,10 @@
-MODULE = LedPanel
+MODULE = MuraxSoC
 BUILD_DIR = target/bitstream
 CONSTRAINTS = src/main/resources/constraints.pcf
 
 all: bitstream
 
-elaborate: 
+elaborate:
 	sbt --supershell=never "runMain ice.$(MODULE)"
 
 bitstream: elaborate
