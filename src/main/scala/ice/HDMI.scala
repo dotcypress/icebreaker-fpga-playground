@@ -15,7 +15,7 @@ case class HDMI() extends Component {
     val pmod1b = master(DVI())
   }
 
-  // 25.125 MHz
+  // 25.175 MHz
   val config = PLLConfig(B"4'b0000", B"7'b1000010", B"3'b101", B"3'b001")
   val pll = PLLPad(config)
 

@@ -9,7 +9,7 @@ case class PLLConfig(
     var DIVQ: Bits,
     var FILTER_RANGE: Bits
 ) {
-  def applyTo(bb: BlackBox): Unit = {
+  def applyTo(bb: PLLPad): Unit = {
     bb.addGeneric("DIVR", DIVR)
     bb.addGeneric("DIVF", DIVF)
     bb.addGeneric("DIVQ", DIVQ)
@@ -17,16 +17,47 @@ case class PLLConfig(
   }
 }
 
-case class PLLPad(p: PLLConfig) extends BlackBox {
+case class PLLPad(config: PLLConfig) extends BlackBox {
+  setDefinitionName("SB_PLL40_PAD")
   val clockPin = in(Bool).setName("PACKAGEPIN")
   val coreClockOut = out(Bool).setName("PLLOUTCORE")
   val reset = in(Bool).setName("RESETB")
-  p.applyTo(this)
-  setDefinitionName("SB_PLL40_PAD")
+  config.applyTo(this)
 }
 
 case class GlobalBuffer() extends BlackBox {
+  setDefinitionName("SB_GB")
   val input = in(Bool).setName("USER_SIGNAL_TO_GLOBAL_BUFFER")
   val output = out(Bool).setName("GLOBAL_BUFFER_OUTPUT")
-  setDefinitionName("SB_GB")
+}
+
+case class RgbCtrlConfig(
+    var halfCurrent: Boolean = false,
+    var redCurrent: String = "0b000001",
+    var blueCurrent: String = "0b000001",
+    var greenCurrent: String = "0b000001"
+) {
+  def applyTo(bb: RgbCtrl): Unit = {
+    bb.addGeneric("CURRENT_MODE", if (halfCurrent) "0b1" else "0b0")
+    bb.addGeneric("RGB0_CURRENT", redCurrent)
+    bb.addGeneric("RGB1_CURRENT", blueCurrent)
+    bb.addGeneric("RGB2_CURRENT", greenCurrent)
+  }
+}
+
+case class RgbCtrl(
+    config: RgbCtrlConfig = RgbCtrlConfig()
+) extends BlackBox {
+  setDefinitionName("SB_RGBA_DRV")
+  val current = in(Bool).setName("CURREN")
+  val enable = in(Bool).setName("RGBLEDEN")
+
+  val pwmRed = in(UInt(1 bit)).setName("RGB0PWM")
+  val pwmGreen = in(UInt(1 bit)).setName("RGB1PWM")
+  val pwmBlue = in(UInt(1 bit)).setName("RGB2PWM")
+
+  val red = out(UInt(1 bit)).setName("RGB0")
+  val green = out(UInt(1 bit)).setName("RGB1")
+  val blue = out(UInt(1 bit)).setName("RGB2")
+  config.applyTo(this)
 }

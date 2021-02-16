@@ -15,9 +15,9 @@ set_io -nowarn io_ledRed           11
 set_io -nowarn io_ledGreen         37
 
 # RGB LED Driver
-set_io -nowarn io_ledRGB_red       39
-set_io -nowarn io_ledRGB_green     40
-set_io -nowarn io_ledRGB_blue      41
+set_io -nowarn io_ledRGB_r         39
+set_io -nowarn io_ledRGB_g         40
+set_io -nowarn io_ledRGB_b         41
 
 # SPI Flash
 set_io -nowarn io_flash_clock      15

@@ -1,13 +1,13 @@
-MODULE = MuraxSoC
+MODULE = RGBLed
 BUILD_DIR = target/bitstream
 CONSTRAINTS = src/main/resources/constraints.pcf
 
-all: bitstream
+all: elaborate bitstream
 
 elaborate:
 	sbt --supershell=never "runMain ice.$(MODULE)"
 
-bitstream: elaborate
+bitstream:
 	cd $(BUILD_DIR) && \
 	yosys -q -p 'synth_ice40 -top $(MODULE) -json $(MODULE).json' $(MODULE).v && \
 	nextpnr-ice40 --up5k --json $(MODULE).json --pcf ../../$(CONSTRAINTS) --asc $(MODULE).asc && \
