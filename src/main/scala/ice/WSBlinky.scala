@@ -37,7 +37,7 @@ case class WSBlinky() extends Component {
     }
 
     new SlowArea(5 MHz) {
-      val ledStrip = new WS2812bCtrl(300)
+      val ledStrip = new WS2812bCtrl(100)
       ledStrip.io.colors.valid := True
       io.pmod1b_pin1 := !ledStrip.io.ledData
 
