@@ -1,4 +1,4 @@
-MODULE = STP08cp05
+MODULE = Mic
 BUILD_DIR = target/bitstream
 CONSTRAINTS = src/main/resources/constraints.pcf
 
@@ -10,7 +10,7 @@ elaborate:
 bitstream:
 	cd $(BUILD_DIR) && \
 	yosys -q -p 'synth_ice40 -top $(MODULE) -json $(MODULE).json' $(MODULE).v && \
-	nextpnr-ice40 --up5k --json $(MODULE).json --pcf ../../$(CONSTRAINTS) --asc $(MODULE).asc && \
+	nextpnr-ice40 --package sg48 --up5k --json $(MODULE).json --pcf ../../$(CONSTRAINTS) --asc $(MODULE).asc && \
 	icetime -d up5k -mtr $(MODULE).rpt $(MODULE).asc && \
 	icepack $(MODULE).asc $(MODULE).bin
 
