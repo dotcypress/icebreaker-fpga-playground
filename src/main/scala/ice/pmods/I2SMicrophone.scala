@@ -17,7 +17,7 @@ object AudioChannel extends SpinalEnum {
 
 case class I2SMicrophoneCtrl(
     i2sClock: ClockDomain,
-    wordWidth: BitCount = 33 bits,
+    wordWidth: BitCount = 32 bits,
     pcmWidth: BitCount = 24 bits
 ) extends Component {
   assert(wordWidth.value - pcmWidth.value - 1 > 0)
@@ -47,7 +47,7 @@ case class I2SMicrophoneCtrl(
     sample(bitCounter) := ~io.pins.pin1.asBool
 
     when(bitCounter.willOverflow) {
-      pcm := sample(1, pcmWidth).reversed.asUInt
+      pcm := sample(1, pcmWidth).reversed.asSInt.abs
       fifo.io.push.valid := ws
       ws := ~ws
     }
