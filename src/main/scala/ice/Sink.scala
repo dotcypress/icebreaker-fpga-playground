@@ -5,7 +5,6 @@ import spinal.lib._
 import spinal.lib.com.uart._
 import lib.UartSink
 import pmods._
-import blackbox._
 
 object Sink {
   def main(args: Array[String]) = boards.IceBreaker.generate(new Sink)
@@ -17,17 +16,18 @@ case class Sink() extends Component {
   }
 
   val packetWidth = 16 bits
-
   val counter = Counter(packetWidth)
-  val timeout = Timeout(32 Hz)
 
-  when(timeout.state) {
+  val sink = UartSink(
+    dataWidth = packetWidth,
+    endianness = BIG
+  )
+  sink.io.uart <> io.uart
+  sink.io.data <> counter.toFlow.toStream.transmuteWith(Bits)
+
+  val timeout = Timeout(32 Hz)
+  when(timeout) {
     counter.increment()
     timeout.clear()
   }
-
-  val sink = UartSink(dataWidth = packetWidth)
-  sink.io.uart <> io.uart
-  sink.io.data.valid := timeout.stateRise
-  sink.io.data.payload := counter.value.asBits
 }
