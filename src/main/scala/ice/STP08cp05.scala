@@ -12,29 +12,30 @@ object STP08cp05 {
 
 case class ShiftRegisterPMOD() extends PMODBundle {
   override def asMaster() = {
-    in(pin4, pin7, pin9, pin10)
-    out(pin1, pin2, pin3, pin8)
+    in(pin7, pin8, pin9)
+    out(pin1, pin2, pin3, pin4, pin10)
   }
 }
 
 case class STP08cp05() extends Component {
   val io = new Bundle {
-    val pmod1b = master(ShiftRegisterPMOD())
+    val pmod2 = master(ShiftRegisterPMOD())
   }
 
   val counter = Counter(8)
   val clock = Reg(Bool) init (False)
   val latch = Reg(Bool) init (False)
 
-  val animation = new SlowArea(16 Hz) {
+  val animation = new SlowArea(8 Hz) {
     val offset = CounterFreeRun(8)
   }
 
-  val pins = io.pmod1b
-  pins.pin1 := (counter === animation.offset).asBits
-  pins.pin2 := clock.asBits
-  pins.pin3 := latch.asBits
-  pins.pin8 := 0
+  val pins = io.pmod2
+  pins.pin1 := B(clockDomain.newSlowedClockDomain(2 MHz).readClockWire)
+  pins.pin2 := latch.asBits
+  pins.pin3 := (counter === animation.offset).asBits
+  pins.pin4 := 0
+  pins.pin10 := clock.asBits
 
   new StateMachine {
     val shiftData: State = new State with EntryPoint {

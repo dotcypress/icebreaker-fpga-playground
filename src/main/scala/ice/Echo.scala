@@ -15,7 +15,7 @@ case class Echo() extends Component {
   }
 
   val uartCtrl = new UartCtrl()
-  uartCtrl.io.config.setClockDivider(19.2 kHz)
+  uartCtrl.io.config.setClockDivider(115.2 kHz)
   uartCtrl.io.config.frame.dataLength := 7
   uartCtrl.io.config.frame.parity := UartParityType.NONE
   uartCtrl.io.config.frame.stop := UartStopType.ONE
