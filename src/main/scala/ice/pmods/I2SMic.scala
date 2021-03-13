@@ -16,46 +16,40 @@ object AudioChannel extends SpinalEnum {
 }
 
 case class I2SMicCtrl(
-    i2sClock: ClockDomain,
-    pcmWidth: Int = 24,
-    wordWidth: Int = 32
+    pcmWidth: BitCount = 24 bits,
+    wordWidth: BitCount = 32 bits
 ) extends Component {
   val io = new Bundle {
     val channel = in(AudioChannel)
+    val bitClock = in(Bool)
     val pins = master(I2SMic())
-    val pcm = master(Flow(Bits(pcmWidth bits)))
+    val pcm = master(Flow(Bits(pcmWidth)))
   }
 
-  val fifo = new StreamFifoCC(
-    Bits(pcmWidth bits),
-    8,
-    pushClock = i2sClock,
-    popClock = clockDomain
-  )
-  fifo.io.pop.toFlow >> io.pcm
+  val leftChannel = io.channel === AudioChannel.left
+  val ws = Reg(Bool) init (False)
+  val pcm = Reg(Bits(pcmWidth)) init (0)
 
-  val mic = new ClockingArea(i2sClock) {
-    val ws = Reg(Bool) init (False)
-    val pcm = Reg(Bits(pcmWidth bits)) init (0)
-    fifo.io.push.payload := pcm
-    fifo.io.push.valid := False
+  io.pins.pin2 := B(io.bitClock)
+  io.pins.pin3 := B(~leftChannel)
+  io.pins.pin4 := B(ws)
+  io.pcm.payload := 0
+  io.pcm.valid := False
 
-    val frameWidth = wordWidth * 2
+  val frameWidth = wordWidth.value * 2
+  val bitCounter = Counter(frameWidth)
+  val sample = Reg(Bits(frameWidth bits)) init (0)
 
-    val bitCounter = CounterFreeRun(frameWidth)
-    val sample = Reg(Bits(frameWidth bits)) init (0)
+  when(io.bitClock.rise) {
+    bitCounter.increment()
     sample(bitCounter) := io.pins.pin1.asBool
 
-    when(bitCounter.willOverflowIfInc) {
-      pcm := (io.channel === AudioChannel.left) ?
-        sample(1, pcmWidth bits) |
-        sample(32, pcmWidth bits)
+    when(bitCounter.willOverflow) {
+      io.pcm.payload := leftChannel ?
+        sample(1, pcmWidth).reversed |
+        sample(0, pcmWidth).reversed
+      io.pcm.valid := True
       ws := ~ws
-      fifo.io.push.valid := True
     }
   }
-
-  io.pins.pin2 := B(i2sClock.readClockWire)
-  io.pins.pin3 := B(io.channel === AudioChannel.right)
-  io.pins.pin4 := B(mic.ws)
 }
