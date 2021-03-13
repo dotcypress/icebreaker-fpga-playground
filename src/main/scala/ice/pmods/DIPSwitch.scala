@@ -28,7 +28,7 @@ case class DIPSwitchCtrl(msbFirst: Boolean = true) extends Component {
   val value = if (msbFirst) {
     bits.asUInt
   } else {
-    bits.asUInt.flip
+    bits.reversed.asUInt
   }
 
   io.output := value

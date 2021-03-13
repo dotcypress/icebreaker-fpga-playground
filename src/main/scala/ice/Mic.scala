@@ -12,21 +12,28 @@ object Mic {
 
 case class Mic() extends Component {
   val io = new Bundle {
-    val pmod2 = master(I2SMicrophone())
+    val pmod1a = master(DIPSwitch())
+    val pmod2 = master(I2SMic())
     val uart = master(Uart())
   }
 
-  val sink = UartSink(2 MHz)
-  sink.io.uart <> io.uart
+  val dipSwitch = new DIPSwitchCtrl(false)
+  io.pmod1a <> dipSwitch.io.pins
 
-  val i2s = new SlowArea(1 MHz) {
+  val channel = dipSwitch.io.output(0) ? AudioChannel.left | AudioChannel.right
+
+  val i2s = new SlowArea(6 MHz) {
     val clock = CounterFreeRun(2).willOverflow
   }
 
-  val mic = new I2SMicrophoneCtrl(ClockDomain(i2s.clock, clockDomain.readResetWire))
+  val mic = new I2SMicCtrl(
+    ClockDomain(i2s.clock, clockDomain.readResetWire),
+    8
+  )
   mic.io.pins <> io.pmod2
-  mic.io.channel := AudioChannel.left
+  mic.io.channel := channel
 
-  sink.io.data.valid := mic.io.pcm.valid
-  sink.io.data.payload := mic.io.pcm.payload(23 downto 16).asBits
+  val sink = UartSink(2 MHz, 8 bits)
+  sink.io.uart <> io.uart
+  sink.io.data <> mic.io.pcm.toStream
 }
