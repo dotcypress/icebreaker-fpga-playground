@@ -17,7 +17,8 @@ case class Mic() extends Component {
     val uart = master(Uart())
   }
 
-  val config = PLLConfig(B"4'b0000", B"7'b1010101", B"3'b100", B"3'b001")
+  // 49.500 MHz
+  val config = PLLConfig(B"4'b0000", B"7'b1000001", B"3'b100", B"3'b001")
   val pll = PLLPad(config)
 
   pll.clockPin := ClockDomain.current.readClockWire
@@ -26,15 +27,15 @@ case class Mic() extends Component {
   val pllClockDomain = ClockDomain(
     pll.coreClockOut,
     ClockDomain.current.readResetWire,
-    frequency = FixedFrequency(64.512 MHz)
+    frequency = FixedFrequency(49.500 MHz)
   )
 
   new ClockingArea(pllClockDomain) {
-    val audio = new SlowArea(4.608 MHz) {
+    val audio = new SlowArea(6.1875 MHz) {
       val clock = CounterFreeRun(2).willOverflow
     }
 
-    val wordWidth = 32 bits
+    val wordWidth = 8 bits
 
     val mic = new PDMMicCtrl(wordWidth)
     mic.io.pins <> io.pmod2
@@ -42,6 +43,6 @@ case class Mic() extends Component {
 
     val sink = UartSink(2 MHz, wordWidth)
     sink.io.uart <> io.uart
-    sink.io.data <> mic.io.pcm.toStream
+    sink.io.data <> mic.io.pcm.toStream.transmuteWith(Bits)
   }
 }
