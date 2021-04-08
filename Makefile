@@ -1,4 +1,4 @@
-MODULE = LedAnimation
+MODULE = Mic
 BUILD_DIR = target/bitstream
 CONSTRAINTS = src/main/resources/constraints.pcf
 

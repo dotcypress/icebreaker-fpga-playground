@@ -3,10 +3,9 @@ package ice
 import spinal.core._
 import spinal.lib._
 import spinal.lib.fsm._
-
-import pmods._
 import spinal.lib.misc.Prescaler
 
+import pmods._
 object LedAnimation {
   def main(args: Array[String]) = boards.IceBreaker.generate(new LedAnimation)
 }

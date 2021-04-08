@@ -31,11 +31,11 @@ case class Mic() extends Component {
   )
 
   new ClockingArea(pllClockDomain) {
-    val audio = new SlowArea(6.1875 MHz) {
+    val audio = new SlowArea(4.950 MHz) {
       val clock = CounterFreeRun(2).willOverflow
     }
 
-    val wordWidth = 8 bits
+    val wordWidth = 16 bit
 
     val mic = new PDMMicCtrl(wordWidth)
     mic.io.pins <> io.pmod2
